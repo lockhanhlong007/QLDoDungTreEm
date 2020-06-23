@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "TrangChu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var slides = (List<ModelsDungChung.Slide>)ViewBag.Slides;
+    var newproduct = (List<ModelsDungChung.SanPham>)ViewBag.NewProduct;
+    int check = 0;
+}
+@section Category
+{
+    <div class="sub-cate">
+        @{ Html.RenderAction("_CategoriesLeft", "Home");}
+    </div>
+}
+<div class="shoes-grid">
+    <div class="wrap-in">
+        <div class="wmuSlider example1 slide-grid">
+            <div class="wmuSliderWrapper">
+
+                @foreach (var item in slides)
+                {
+                    <article style="position: absolute; width: 100%; opacity: 0;">
+                        <div class="banner-matter">
+                            <div class="col-md-12 banner-bag">
+                                <img class="img-responsive " src="~/Content/Slides/@item.Image" alt=" " />
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            <ul class="wmuSliderPagination">
+                @foreach (var item in slides)
+                {
+                    <li><a href="#" class="">@item.DisplayOrder</a></li>
+                }
+            </ul>
+            <script src="~/Assets/client/js/jquery.wmuSlider.js"></script>
+            <script>
+                $('.example1').wmuSlider();
+            </script>
+        </div>
+    </div>
+
+    <!---->
+
+    <div class="products">
+        <h5 class="latest-product">SẢN PHẨM MỚI</h5>
+        <a class="view-all" href="@Url.Action("ListProduct","Product")">Xem Thêm <span></span></a>
+    </div>
+    <div class="product-left">
+        @foreach (var item in newproduct)
+        {
+            check++;
+            if (check == 1)
+            {
+
+                <div class="col-md-4 chain-grid">
+                    <a href="/Product/ViewDetail1Product/@item.MaSP.Trim()"><img class="img-responsive chain" src="~/Content/Hinh/@item.Hinh" alt=" " /></a>
+                    <span class="star"> </span>
+                    <div class="grid-chain-bottom">
+                        <h6><a href="/Product/ViewDetail1Product/@item.MaSP.Trim()">@item.TenSP</a></h6>
+                        <div class="star-price">
+                            <div class="dolor-grid">
+                                <span class="actual">@(item.GiaBan.HasValue ? item.GiaBan.Value.ToString("N0") + "Đ" : "Liên Hệ")</span>
+                            </div>
+                            <a class="now-get get-cart" href="/ThemGioHang?productID=@item.MaSP.Trim()&quantity=1">Thêm Vào Giỏ</a>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else if (check == 2)
+            {
+
+                <div class="col-md-4 chain-grid">
+                    <a href="/Product/ViewDetail1Product/@item.MaSP.Trim()"><img class="img-responsive chain" src="~/Content/Hinh/@item.Hinh" alt=" " /></a>
+                    <span class="star"> </span>
+                    <div class="grid-chain-bottom">
+                        <h6><a href="/Product/ViewDetail1Product/@item.MaSP.Trim()">@item.TenSP</a></h6>
+                        <div class="star-price">
+                            <div class="dolor-grid">
+                                <span class="actual">@(item.GiaBan.HasValue ? item.GiaBan.Value.ToString("N0") + "Đ" : "Liên Hệ")</span>
+                            </div>
+                            <a class="now-get get-cart" href="/ThemGioHang?productID=@item.MaSP.Trim()&quantity=1">Thêm Vào Giỏ</a>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+
+                <div class="col-md-4 chain-grid grid-top-chain">
+                    <a href="/Product/ViewDetail1Product/@item.MaSP.Trim()"><img class="img-responsive chain" src="~/Content/Hinh/@item.Hinh" alt=" " /></a>
+                    <span class="star"> </span>
+                    <div class="grid-chain-bottom">
+                        <h6><a href="/Product/ViewDetail1Product/@item.MaSP.Trim()">@item.TenSP</a></h6>
+                        <div class="star-price">
+                            <div class="dolor-grid">
+                                <span class="actual">@(item.GiaBan.HasValue ? item.GiaBan.Value.ToString("N0") + "Đ" : "Liên Hệ")</span>
+                            </div>
+                            <a class="now-get get-cart" href="/ThemGioHang?productID=@item.MaSP.Trim()&quantity=1">Thêm Vào Giỏ</a>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+                check = 0;
+            }
+        }
+        <div class="clearfix"> </div>
+    </div>
+    <div class="clearfix"> </div>
+</div>

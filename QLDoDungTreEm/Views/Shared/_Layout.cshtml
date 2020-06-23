@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Big shope A Ecommerce Category Flat Bootstarp Resposive Website Template | Home :: w3layouts</title>
+    <link href="~/Assets/client/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <!--theme-style-->
+    <link href="~/Assets/client/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/Content/createcss/css.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Assets/client/css/etalage.css" type="text/css" media="all" />
+    <link href="~/Assets/client/Shopcart/css/checkout.css" type="text/css" rel="stylesheet" media="all">
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" media="all" />
+
+    <!--//theme-style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--fonts-->
+    <link href="~/Assets/client/font/fontcss.css" rel="stylesheet" type="text/css" />
+    <!--//fonts-->
+    <script src="~/Assets/client/js/jquery.min.js"></script>
+
+    <script src="~/Content/createjs/AlertMessage.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+</head>
+<body>
+    <!--header-->
+    <div class="header">
+        <div class="top-header">
+            <div class="container">
+                <div class="top-header-left">
+                    <ul class="support">
+                        <li><a href="#"><label> </label></a></li>
+                        <li><a href="#">Hỗ Trợ<span class="live"> 24x7</span></a></li>
+                    </ul>
+                    <ul class="support">
+                        <li class="van"><a href="#"><label> </label></a></li>
+                        <li><a href="#">Miễn Phí Giao Hàng <span class="live">Khi Đơn Hàng Trên 1.000.000Đ</span></a></li>
+                    </ul>
+                    <div class="clearfix"> </div>
+                </div>
+                <!---->
+                <div class="clearfix"> </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <div class="bottom-header">
+        <div class="container">
+            <div class="header-bottom-left">
+                <div class="logo">
+                    <a href="@Url.Action("TrangChu","Home")"><img src="~/Assets/client/images/logo.png" alt=" " /></a>
+                </div>
+                <div class="search">
+                    <form action="/Product/ListProduct" method="get">
+                        <input type="text" id="txtKeyword" name="id" placeholder="Search">
+                        <input type="submit" value="SEARCH">
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="header-bottom-right">
+                @using QLDoDungTreEm.Common
+                @if (Session[CommonConstants.CUSTOMER_SESSION] == null)
+                {
+                    <ul class="login">
+                        <li><a href="@Url.Action("Login","Customer")"><span> </span>Login</a></li>
+                    </ul>
+                }
+                else
+                {
+
+                    <div class="account"><a href="login.html"><span> </span>Hello: @Session[CommonConstants.CUSTOMER_SESSION].ToString()</a></div>
+                    <ul class="login">
+                        <li><a href="@Url.Action("Logout","Customer")"><span> </span>Logout</a></li>
+                    </ul>
+
+                }
+                <div class="cart"><a href="@Url.Action("Index","ShopCart")"><span> </span>CART</a></div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <!---->
+
+    <div class="container">
+
+        @RenderBody()
+
+        @*Thể Loại*@
+        @RenderSection("Category", required: false)
+        @*@{ Html.RenderAction("_CategoriesLeft", "Home");}*@
+        <div class="clearfix"> </div>
+    </div>
+    @*----------------------------------------------------------------------*@
+
+    <!---->
+    <div class="footer">
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-cate">
+                    <h6>GIỚI THIỆU</h6>
+                    <ul>
+                        <li><a href="#">Về Chúng Tôi</a></li>
+                        <li><a href="#">Thông Tin Liên Hệ</a></li>
+                        <li><a href="#">Tuyển Dụng</a></li>
+                        <li><a href="#">Đối Tác Liên Kết</a></li>
+                    </ul>
+                </div>
+                <div class="footer-bottom-cate bottom-grid-cat">
+                    <h6>CHÍNH SÁCH</h6>
+                    <ul>
+                        <li><a href="#">Chính Sách Bảo Mật Thông Tin</a></li>
+                        <li><a href="#">Chính Sách Vận Chuyển, Giao Nhận</a></li>
+                        <li><a href="#">Chính Sách Bảo Hành</a></li>
+                        <li><a href="#">Chính Sách Đổi Trả Và Hoàn Tiền</a></li>
+                        <li><a href="#">Chính Sách Trả Góp</a></li>
+                        <li><a href="#">Chính Sách Bán Hàng</a></li>
+                    </ul>
+                </div>
+                <div class="footer-bottom-cate">
+                    <h6>HỖ TRỢ</h6>
+                    <ul>
+                        <li><a href="#">Trung Tâm Bảo Hành</a></li>
+                        <li><a href="#">Phương Thức Thanh Toán</a></li>
+                        <li><a href="#">Gửi Yêu Cầu Hỗ Trợ</a></li>
+                        <li><a href="#">Những Câu Hỏi Thường Gặp</a></li>
+                        <li><a href="#">Tra Cưu Hóa Đơn</a></li>
+                    </ul>
+                </div>
+                <div class="footer-bottom-cate cate-bottom">
+                    <h6>ĐỊA ĐIỂM MUA HÀNG</h6>
+                    <ul>
+                        <li>Cơ Sở Chính: 140 Lê Trọng Tấn, Phường 15, Tân Phú</li>
+                        <li>Chi Nhánh 1: 280 Lê Trọng Tấn, Phường 15, Tân Phú</li>
+                        <li>Chi Nhánh 2: 14 Lê Trọng Tấn, Phường 15, Tân Phú</li>
+                        <li class="phone">HotLine : 0123456789</li>
+                    </ul>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("ClientSrcipt", required: false)
+    <!--script-->
+    <script src="~/Assets/client/js/jquery.etalage.min.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+
+            $('#etalage').etalage({
+                thumb_image_width: 300,
+                thumb_image_height: 400,
+                source_image_width: 900,
+                source_image_height: 1200,
+                show_hint: true,
+                click_callback: function (image_anchor, instance_id) {
+                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
+                }
+            });
+
+        });
+    </script>
+    <script src="~/Content/createjs/TimKiemConTrol.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "DonHang";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Quản Lý Chi Tiết Đơn Hàng
+}
+@model PagedList.IPagedList<ModelsDungChung.LayChiTietHoaDonResult>
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Danh sách Sản Phẩm
+            </div>
+            <!-- /.panel-heading -->
+            <div class="card-body">
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" class="btn btn-primary btn-large" onclick="location.href='@Url.Action("IndexDH", "DonHang")'" value="Back" />
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("IndexCTDH", "DonHang", FormMethod.Get))
+                    {
+                        <div class="row form-group">
+                            <div class="col-lg-8 col-md-8">
+                                <input type="text" value="@ViewBag.Search" class="form-control" name="search" />
+                            </div>
+                            <div class="col-lg-1 col-md-1">
+                                <button type="submit" class="btn btn-success">Search</button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr style="text-align:center">
+                                    <th>Mã DH</th>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th>Số Lượng</th>
+                                    <th>Đơn Giá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr style="text-align:center" id="row_@item.MaDH">
+                                        <td>@item.MaDH</td>
+                                        <td>@item.TenSP.Trim()</td>
+                                        <td>@item.SoLuong</td>
+                                        <td>@item.DonGia</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @Html.PagedListPager(Model, page => Url.Action("IndexCTDH", "DonHang", new { page, @search = @ViewBag.Search }),
+                       new PagedListRenderOptions
+                            {
+                                LinkToPreviousPageFormat = "Previous",
+                                LinkToNextPageFormat = "Next",
+                                LinkToFirstPageFormat = "First",
+                                LinkToLastPageFormat = "Last"
+                            })
+                    </div>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+        <!-- /.panel-body -->
+    </div>
+</div>

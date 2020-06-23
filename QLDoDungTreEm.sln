@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLDoDungTreEm", "QLDoDungTreEm\QLDoDungTreEm.csproj", "{89780455-87A4-4E28-BDE3-A30CB520E7B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsDungChung", "ModelsDungChung\ModelsDungChung.csproj", "{4FE69959-B6CA-43C4-AD10-D1F2741C57A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89780455-87A4-4E28-BDE3-A30CB520E7B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89780455-87A4-4E28-BDE3-A30CB520E7B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89780455-87A4-4E28-BDE3-A30CB520E7B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89780455-87A4-4E28-BDE3-A30CB520E7B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE69959-B6CA-43C4-AD10-D1F2741C57A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE69959-B6CA-43C4-AD10-D1F2741C57A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE69959-B6CA-43C4-AD10-D1F2741C57A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE69959-B6CA-43C4-AD10-D1F2741C57A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {926E3D66-825E-4E09-A117-5FD502C0B11E}
+	EndGlobalSection
+EndGlobal

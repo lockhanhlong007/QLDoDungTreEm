@@ -1,0 +1,77 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model PagedList.IPagedList<ModelsDungChung.LoaiSP>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Quản Lý Loại Sản Phẩm
+}
+<div class="col-lg-12">
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            Danh sách danh mục
+        </div>
+        <!-- /.panel-heading -->
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "LoaiSP", FormMethod.Get))
+            {
+                <div class="row form-group">
+                    <div class="col-lg-8 col-md-8">
+                        <input type="text" value="@ViewBag.Search" class="form-control" name="search" />
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                    <div class="col-lg-2 col-md-2"><a class="btn btn-primary" href="/Admin/LoaiSP/Create">Thêm mới</a></div>
+                </div>
+            }
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã Loại</th>
+                            <th>Mã Danh Mục</th>
+                            <th>Tên Loại Sản Phẩm</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.MaLoai">
+                                <td>@item.MaLoai</td>
+                                <td>@item.MaDM</td>
+                                <td>@item.TenLoaiSP</td>
+                                <td>
+                                    <a href="/Admin/LoaiSP/Edit/@item.MaLoai">Edit</a>
+                                    |
+                                    @Ajax.ActionLink("Xóa", "Delete", new { @id = item.MaLoai }, new AjaxOptions
+                                {
+                                   Confirm = "Bạn Chắc Chắn Muốn Xóa Chứ?",
+                                   OnComplete = "$('#row_" + @item.MaLoai + "').remove()",
+                                   HttpMethod = "Delete"
+                                })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @search = @ViewBag.Search }),
+                new PagedListRenderOptions
+                {
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToFirstPageFormat ="First",
+                LinkToLastPageFormat = "Last"
+                })
+            </div>
+        </div>
+        <!-- /.table-responsive -->
+    </div>
+    <!-- /.panel-body -->
+</div>

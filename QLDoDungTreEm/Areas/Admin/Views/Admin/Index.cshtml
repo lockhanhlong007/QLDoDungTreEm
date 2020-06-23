@@ -1,0 +1,91 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "QuanLy";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Quản Lý Admin
+}
+
+@model PagedList.IPagedList<ModelsDungChung.Manager>
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Danh sách người dùng
+            </div>
+            <!-- /.panel-heading -->
+            <div class="card-body">
+                @using (Html.BeginForm("Index", "Admin", FormMethod.Get))
+                {
+                    <div class="row form-group">
+                        <div class="col-lg-8 col-md-8">
+                            <input type="text" value="@ViewBag.Search" class="form-control" name="search">
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                        <div class="col-lg-2 col-md-2"><a class="btn btn-primary" href="/Admin/Admin/Create">Thêm mới</a></div>
+                    </div>
+                }
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr style="text-align:center">
+                                <th>Name</th>
+                                <th>UserName</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr style="text-align:center" id="row_@item.ID">
+                                    <td>@item.Name</td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.Phone</td>
+                                    <td>@item.Email</td>
+
+                                    <td>
+                                        <a href="/Admin/Admin/Edit/@item.ID">Sửa</a>
+                                        |
+                                        @Ajax.ActionLink("Xóa", "Delete", new { @id = item.ID }, new AjaxOptions
+                                    {
+                                       Confirm = "Bạn Chắc Chắn Muốn Xóa Chứ?",
+                                       OnComplete = "$('#row_" + @item.ID + "').remove()",
+                                       HttpMethod = "Delete"
+                                    })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div id="tmp1">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @search = @ViewBag.Search }),
+                   new PagedListRenderOptions
+                   {
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToFirstPageFormat ="First",
+                LinkToLastPageFormat = "Last"
+                   })
+                    </div>
+                </div>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+</div>

@@ -1,0 +1,163 @@
+﻿@model List<QLDoDungTreEm.Models.CartItem>
+@{
+    ViewBag.Title = "ShopCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string[] tmp = null;
+    double total = 0;
+    int i = 0;
+}
+
+@section ClientSrcipt{
+    <!-- cart-js -->
+    <script src="~/Assets/client/Shopcart/js/minicart.js"></script>
+    <script>
+        hub.render();
+
+        hub.cart.on('new_checkout', function (evt) {
+            var items, len, i;
+
+            if (this.subtotal() > 0) {
+                items = this.items();
+
+                for (i = 0, len = items.length; i < len; i++) { }
+            }
+        });
+    </script>
+    <!-- //cart-js -->
+    <script src="~/Content/createjs/ShopCartControl.js"></script>
+
+}
+
+<section class="checkout_wthree py-sm-5 py-3">
+    <div class="container">
+        <div class="check_w3ls">
+            @if (Model.Count > 0)
+            {
+                <div class="d-sm-flex justify-content-between mb-4">
+                    <h4 class="mt-sm-0 mt-3">
+                        Your shopping cart contains:
+                        <span>@Model.Count Products</span>
+                    </h4>
+                </div>
+                <div class="checkout-right">
+                    <table class="timetable_sub">
+                        <thead>
+                            <tr>
+                                <th>SL No.</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                i++;
+                            <tr class="rem">
+                                <td class="invert">@i</td>
+                                <td class="invert-image">
+                                    <a href="@Url.Action("ViewDetail1Product","Product",new { id = item.Product.MaSP.Trim() })">
+                                        @if (item.Product.Hinh.Contains('|'))
+                                        {
+                                            tmp = item.Product.Hinh.Trim().Split('|');
+                                            <img src="~/Content/Hinh/@tmp[0]" alt=" " class="img-responsive">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/Hinh/@item.Product.Hinh.Trim()" alt=" " class="img-responsive">
+                                        }
+                                    </a>
+                                </td>
+                                <td class="invert"><a href="/Product/ViewDetail1Product/@item.Product.MaSP">@item.Product.TenSP.Trim()</a></td>
+                                <td class="invert">
+                                    <div class="quantity">
+                                        <div class="quantity-select">
+                                            <div class="entry value-minus">&nbsp;</div>
+                                            <div class="entry value" data-id="@item.Product.MaSP.Trim()">
+                                                <span>@item.quantity</span>
+                                            </div>
+                                            <div class="entry value-plus active">&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="invert">@(item.Product.GiaBan.GetValueOrDefault(0).ToString("N0") + "Đ")</td>
+                                <td class="invert">
+                                    <div class="rem">
+                                        <div data-id="@item.Product.MaSP.Trim()" class="close"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div><br /><br /><br /></div>
+                <div class="row checkout-left mt-5">
+                    <div class="col-md-6 checkout-left-basket">
+                        <h4>Continue to basket</h4>
+                        <ul>
+                            @foreach (var item in Model)
+                            {
+                                total = item.Product.GiaBan.GetValueOrDefault(0) * item.quantity + total;
+                                <li>
+                                    @item.Product.TenSP
+                                    <i> - </i>
+                                    <span>@((item.Product.GiaBan.GetValueOrDefault(0) * item.quantity).ToString("N0") + "Đ") </span>
+                                </li>
+                            }
+                            <li>
+                                <strong>Total</strong>
+                                <i> - </i>
+                                <span>@(total.ToString("N0") + "Đ")</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 address_form">
+                        <h4>Billing Address</h4>
+                        <form action="@Url.Action("Payment", "ShopCart")" method="post" class="creditly-card-form shopf-sear-headinfo_form">
+                            <div class="creditly-wrapper wrapper">
+                                <div class="information-wrapper">
+                                    <div class="first-row form-group">
+                                        <div class="controls">
+                                            <label class="control-label">Full name: </label>
+                                            <input class="billing-address-name form-control" type="text" name="HoTen" placeholder="Full name">
+                                        </div>
+                                        <div class="card_number_grids">
+                                            <div class="card_number_grid_left">
+                                                <div class="controls">
+                                                    <label class="control-label">Mobile number:</label>
+                                                    <input class="form-control" type="text" name="DienThoai" placeholder="Mobile number">
+                                                </div>
+                                            </div>
+                                            <div class="card_number_grid_right">
+                                                <div class="controls">
+                                                    <label class="control-label">Address: </label>
+                                                    <input class="form-control" type="text" name="DiaChi" placeholder="Address">
+                                                </div>
+                                            </div>
+                                            <div class="clear"> </div>
+                                        </div>
+                                        <div class="controls">
+                                            <label class="control-label">Email: </label>
+                                            <input class="form-control" type="text" name="Email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <button class="submit check_out">Place Order</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div><br /><br /><br /><br /><br /></div>
+                <div class="d-sm-flex justify-content-between mb-4"> <span class="alert alert-danger text-center">Chưa Có Sản Phẩm Nào Trong Giỏ Hàng</span></div>
+            }
+        </div>
+    </div>
+</section>
+<div><br /><br /><br /></div>

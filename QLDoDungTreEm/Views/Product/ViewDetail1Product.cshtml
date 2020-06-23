@@ -1,0 +1,64 @@
+﻿@model ModelsDungChung.SanPham
+@{
+    ViewBag.Title = "ViewDetail1Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> tmp = new List<string>();
+}
+
+@section Category
+{
+    <div class="sub-cate">
+        @{ Html.RenderAction("_CategoriesLeft", "Home");}
+    </div>
+
+}
+
+<div class=" single_top">
+    <div class="single_grid">
+        <div class="grid images_3_of_2">
+            <ul id="etalage">
+                @if (Model.Hinh.Contains('|'))
+                {
+                    tmp.AddRange(Model.Hinh.Trim().Split('|'));
+                    foreach (string h in tmp)
+                    {
+                        <li>
+                            <img src="~/Content/Hinh/@h" class="etalage_thumb_image img-responsive" />
+                            <img src="~/Content/HinhMaxSize/@h" class=" etalage_source_image img-responsive" title="" />
+                        </li>
+                    }
+
+                }
+                else
+                {
+                    <li>
+                        <img src="~/Content/Hinh/@Model.Hinh" class="etalage_thumb_image img-responsive" />
+                        <img src="~/Content/HinhMaxSize/@Model.Hinh" class=" etalage_source_image img-responsive" title="" />
+                    </li>
+                }
+            </ul>
+            <div class="clearfix"> </div>
+        </div>
+
+        <div class="desc1 span_3_of_2">
+            <h4>@Model.TenSP</h4>
+            <div class="cart-b">
+                <div class="left-n ">@(Model.GiaBan.HasValue ? Model.GiaBan.Value.ToString("N0") + "Đ" : "Liên Hệ")</div>
+                <a class="now-get get-cart-in" href="/ThemGioHang?productID=@Model.MaSP.Trim()&quantity=1">ADD TO CART</a>
+                <div class="clearfix"></div>
+            </div>
+            <h4>Thông Tin Chi Tiết Sản Phẩm</h4>
+            <p>Tên Thương Hiệu: @Model.ThuongHieu.TenThuongHieu</p>
+            <p>Loại Sản Phẩm: @Model.LoaiSP.TenLoaiSP</p>
+            <p>Nhà Sản Xuất: @Model.NhaSanXuat</p>
+            <p>Dung Tich: @Model.DungTich</p>
+            <p>Chất Liệu: @Model.ChatLieu</p>
+            <p>Đối Tượng: @Model.DoiTuong</p>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div class="toogle">
+        <h3 class="m_3">Product Details</h3>
+        <p class="m_text">@Model.Description</p>
+    </div>
+</div>

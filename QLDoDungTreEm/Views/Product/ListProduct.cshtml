@@ -1,0 +1,145 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@using QLDoDungTreEm.Common;
+@model PagedList.IPagedList<ModelsDungChung.SanPham>
+@{
+    ViewBag.Title = "ListProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string[] tmp = null;
+    int start1 = int.Parse(Session[CommonConstants.StartPriceRange_SESSION].ToString());
+    int end1 = int.Parse(Session[CommonConstants.EndPriceRange_SESSION].ToString());
+}
+@section Category
+{
+    <link href="~/Assets/client/SmartShop/css/jquery-ui.css" rel="stylesheet" />
+    <div class="sub-cate">
+        <div class="filter-price">
+            <h3>Filter By Price</h3>
+            <ul class="dropdown-menu6">
+                <li>
+                    <div id="slider-range"></div>
+                    <input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;" />
+                </li>
+            </ul>
+            <!---->
+            <script type='text/javascript'>
+
+                $(window).load(function () {
+                // taken from https://davidwalsh.name/javascript-debounce-function
+                    function debounce(func, wait, immediate) {
+                      var timeout;
+                      return function() {
+                        var context = this,
+                          args = arguments;
+                        var later = function() {
+                          timeout = null;
+                          if (!immediate) func.apply(context, args);
+                        };
+                        var callNow = immediate && !timeout;
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                        if (callNow) func.apply(context, args);
+                      };
+                    };
+                    $("#slider-range").slider({
+                        range: true,
+                        min: 43000,
+                        max: 2090000,
+                        values: [@start1, @end1],
+                        slide: function (event, ui) {
+                            $("#amount").val(ui.values[0] + "Đ" + " - " + ui.values[1] + "Đ");
+                        },
+                        stop: debounce(function (event, ui) {
+                            var start = parseInt(ui.values[0]);
+                            var end = parseInt(ui.values[1]);
+                            $("#amount").val(ui.values[0] + "Đ" + " - " + ui.values[1] + "Đ");
+
+                            GetRecords(start, end);
+
+                        },2000),
+                    });
+                    $("#amount").val($("#slider-range").slider("values", 0) + "Đ" + " - " + $("#slider-range").slider("values", 1) + "Đ");
+
+                    function GetRecords(start, end) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Product/GetProducts",
+                            data: '{start: ' + start + ', end: ' + end + '}',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.status == true) {
+                                    window.location.href = "/Product/ListProduct";
+                                }
+                            }
+                        });
+                    }
+                });
+            </script>
+            <script type="text/javascript" src="~/Assets/client/SmartShop/js/jquery-ui.js"></script>
+            <!---->
+        </div>
+        @{ Html.RenderAction("_CategoriesLeft", "Home");}
+    </div>
+}
+<div class="women-product">
+
+    <div class=" w_content">
+        <div class="women">
+            <h4>Số Sản Phẩm - <span>@Model.Count Sản Phẩm</span> </h4>
+            <ul class="w_nav">
+                <li>Sort : </li>
+                <li><a class="sortclick" href="@Url.Action("SortProduct",new { sort = "New" , dssp = @Model})">New </a></li> |
+                <li>Price :</li>
+                <li><a class="sortclick" href="@Url.Action("SortProduct",new { sort = "LowToHigh", dssp = @Model})"> Low To High </a></li> |
+                <li><a class="sortclick" href="@Url.Action("SortProduct",new { sort = "HighToLow", dssp = @Model})"> High To Low </a></li>
+            </ul>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <!-- grids_of_4 -->
+    <div class="grid-product">
+        @if (@Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <div class="  product-grid" style=" height:300px;margin-bottom:20px;">
+                    <div class="content_box">
+                        <a href="@Url.Action("ViewDetail1Product","Product",new { id = @item.MaSP.Trim() })">
+                            <div class="left-grid-view grid-view-left">
+                                @if (item.Hinh.Contains('|'))
+                                {
+                                    tmp = item.Hinh.Trim().Split('|');
+                                    <img src="~/Content/Hinh/@tmp[0]" class="img-responsive watch-right" alt="" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Hinh/@item.Hinh" class="img-responsive watch-right" alt="" />
+                                }
+                                <div class="mask">
+                                    <div class="info">Quick View</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <h5><a href="@Url.Action("ViewDetail1Product",new { id = @item.MaSP.Trim() })">@item.TenSP</a></h5>
+                    <p>@item.DoiTuong</p>
+                    @(item.GiaBan.HasValue ? item.GiaBan.Value.ToString("N0") + "Đ" : "Liên Hệ")
+                </div>
+            }
+            <div class="clearfix"> </div>
+            @Html.PagedListPager(Model, page => Url.Action("ListProduct", "Product", new { page }),
+        new PagedListRenderOptions
+        {
+        LinkToPreviousPageFormat = "Previous",
+        LinkToNextPageFormat = "Next",
+        LinkToFirstPageFormat = "First",
+        LinkToLastPageFormat = "Last"
+        })
+        }
+        else
+        {
+            <div>Không Tìm Thấy Sản Phẩm</div>
+        }
+    </div>
+</div>

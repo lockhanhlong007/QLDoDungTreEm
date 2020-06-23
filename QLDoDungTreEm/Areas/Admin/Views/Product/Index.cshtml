@@ -1,0 +1,103 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    string[] tmp = null;
+}
+
+@section header{
+    Quản Lý Sản Phẩm
+}
+@model PagedList.IPagedList<ModelsDungChung.SanPham>
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Danh sách Sản Phẩm
+            </div>
+            <!-- /.panel-heading -->
+            <div class="card-body">
+                @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+                {
+                    <div class="row form-group">
+                        <div class="col-lg-8 col-md-8">
+                            <input type="text" value="@ViewBag.Search" class="form-control" name="search" />
+                        </div>
+                        <div class="col-lg-1 col-md-1">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                        <div class="col-lg-2 col-md-2"><a class="btn btn-primary" href="/Admin/Product/Create">Thêm mới</a></div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr style="text-align:center">
+                                <th>Mã SP</th>
+                                <th>Tên SP</th>
+                                <th>Hình</th>
+                                <th>Giá</th>
+                                <th>NXS</th>
+                                <th>Xuất Xứ</th>
+                                <th>Dung Tích</th>
+                                <th>Chất Liệu</th>
+                                <th>Đối Tượng</th>
+                                <th>Description</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr style="text-align:center" id="row_@item.MaSP.Trim()">
+                                <td>@item.MaSP.Trim()</td>
+                                <td>@item.TenSP.Trim()</td>
+                                @if (item.Hinh.Contains('|'))
+                                {
+                                    tmp = @item.Hinh.Split('|');
+                                    <td><img src="~/Content/Hinh/@tmp[0].ToString()" /></td>
+                                }
+                                else
+                                {
+                                    <td><img src="~/Content/Hinh/@item.Hinh" /></td>
+                                }
+                                <td>@item.GiaBan</td>
+                                <td>@item.NhaSanXuat.Trim()</td>
+                                <td>@item.XuatXu.Trim()</td>
+                                <td>@item.DungTich.Trim()</td>
+                                <td>@item.ChatLieu.Trim()</td>
+                                <td>@item.DoiTuong.Trim()</td>
+                                <td>@item.Description</td>
+                                <td width="20%">
+                                    <a href="/Admin/Product/Edit/@item.MaSP.Trim()">Edit</a>
+                                    |
+                                    @Ajax.ActionLink("Delete", "Delete", new { @MaSP = item.MaSP.Trim() }, new AjaxOptions
+                                {
+                                   Confirm = "Bạn Chắc Chắn Muốn Xóa Chứ?",
+                                   OnComplete = "$('#row_" + @item.MaSP.Trim() + "').remove()",
+                                   HttpMethod = "Delete"
+                                })
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", "Product", new { page, @search = @ViewBag.Search }),
+                   new PagedListRenderOptions
+                        {
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToFirstPageFormat ="First",
+                LinkToLastPageFormat = "Last"
+                        })
+                </div>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+</div>

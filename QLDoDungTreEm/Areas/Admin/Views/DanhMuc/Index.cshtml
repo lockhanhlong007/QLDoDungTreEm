@@ -1,0 +1,75 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model PagedList.IPagedList<ModelsDungChung.DanhMuc>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+    Quản Lý Danh Mục
+    }
+<div class="col-lg-12">
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            Danh sách danh mục
+        </div>
+        <!-- /.panel-heading -->
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "DanhMuc", FormMethod.Get))
+            {
+                <div class="row form-group">
+                    <div class="col-lg-8 col-md-8">
+                        <input type="text" value="@ViewBag.Search" class="form-control" name="search" />
+                    </div>
+                    <div class="col-lg-1 col-md-1">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                    <div class="col-lg-2 col-md-2"><a class="btn btn-primary" href="/Admin/DanhMuc/Create">Thêm mới</a></div>
+                </div>
+            }
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr style="text-align:center">
+                            <th>Mã Danh Mục</th>
+                            <th>Tên Danh Mục</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="text-align:center" id="row_@item.MaDM">
+                                <td>@item.MaDM</td>
+                                <td>@item.TenDM</td>
+                                <td>
+                                    <a href="/Admin/DanhMuc/Edit/@item.MaDM">Edit</a>
+                                    |
+                                    @Ajax.ActionLink("Xóa", "Delete", new { @id = item.MaDM }, new AjaxOptions
+                                {
+                                   Confirm = "Bạn Chắc Chắn Muốn Xóa Chứ?",
+                                   OnComplete = "$('#row_" + @item.MaDM + "').remove()",
+                                   HttpMethod = "Delete"
+                                })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @search = @ViewBag.Search }),
+                new PagedListRenderOptions
+                {
+                LinkToPreviousPageFormat = "Previous",
+                LinkToNextPageFormat = "Next",
+                LinkToFirstPageFormat ="First",
+                LinkToLastPageFormat = "Last"
+                })
+            </div>
+        </div>
+        <!-- /.table-responsive -->
+    </div>
+    <!-- /.panel-body -->
+</div>
